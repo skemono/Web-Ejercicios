@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio React Timer</title>
+    <!-- React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <!-- ReactDOM -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel para procesar JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            margin: 20px 0 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        
+        .timer {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .controls button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .controls button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .intervals-list {
+            list-style: none;
+        }
+        
+        .interval-item {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .empty-intervals {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function Stopwatch() {
+            const [time, setTime] = React.useState(0);
+            const [isActive, setIsActive] = React.useState(false);
+            const [intervals, setIntervals] = React.useState([]);
+            const timerRef = React.useRef(null);
+
+            const toggleTimer = () => {
+                if (isActive) {
+                    clearInterval(timerRef.current);
+                } else {
+                    timerRef.current = setInterval(() => {
+                        setTime((prevTime) => prevTime + 1);
+                    }, 1000);
+                }
+                setIsActive(!isActive);
+            };
+
+            const resetTimer = () => {
+                clearInterval(timerRef.current);
+                setTime(0);
+                setIsActive(false);
+            };
+
+            const saveInterval = () => {
+                setIntervals([...intervals, time]);
+            };
+
+            React.useEffect(() => {
+                return () => clearInterval(timerRef.current);
+            }, []);
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            return (
+                <div className="container">
+                    <h1>Aplicación de Timer</h1>
+                    <div className="timer">{formatTime(time)}</div>
+                    <div className="controls">
+                        <button onClick={toggleTimer}>{isActive ? 'Pausar' : 'Iniciar'}</button>
+                        <button onClick={resetTimer}>Reiniciar</button>
+                        <button onClick={saveInterval}>Guardar Intervalo</button>
+                    </div>
+                    <div>
+                        <h3>Intervalos Guardados:</h3>
+                        {intervals.length > 0 ? (
+                            <ul className="intervals-list">
+                                {intervals.map((interval, index) => (
+                                    <li key={index} className="interval-item">{formatTime(interval)}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <div className="empty-intervals">No hay intervalos guardados...</div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Stopwatch />);
+    </script>
+</body>
+</html>

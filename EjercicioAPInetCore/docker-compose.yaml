@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Pollocamperonashe2025!"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sql_data:/var/opt/mssql
+    ports:
+      - "1433:1433"
+
+  api:
+    build:
+      context: ./EjercicioAPInetCore
+      dockerfile: Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=db;Database=IncidentDB;User Id=sa;Password=Pollocamperonashe2025!;TrustServerCertificate=True;"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+volumes:
+  sql_data:

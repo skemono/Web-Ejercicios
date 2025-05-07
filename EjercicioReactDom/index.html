@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio React Intro</title>
+    <!-- React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <!-- ReactDOM -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel para procesar JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            margin: 20px 0 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        
+        .comment-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .comment-form input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .comment-form input:focus {
+            border-color: var(--primary-color);
+        }
+        
+        .comment-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .comment-form button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .comments-list {
+            list-style: none;
+        }
+        
+        .comment-item {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .empty-comments {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function App() {
+            const [comentarios, setComentarios] = React.useState([]);
+            
+            const agregarComentario = (nuevoComentario) => {
+                setComentarios([...comentarios, nuevoComentario]);
+            };
+            
+            return (
+                <div className="container">
+                    <h1>Aplicación de Comentarios</h1>
+                    <CommentForm onSubmit={agregarComentario} />
+                    <div>
+                        <h3>Comentarios:</h3>
+                        {comentarios.length > 0 ? (
+                            <ul className="comments-list">
+                                {comentarios.map((comentario, index) => (
+                                    <li key={index} className="comment-item">{comentario}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <div className="empty-comments">Empieza agregando un comentario...</div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+        
+        function CommentForm({ onSubmit }) {
+            const [inputValue, setInputValue] = React.useState('');
+            
+            const manejarEnvio = (e) => {
+                e.preventDefault();
+                if (inputValue.trim()) {
+                    onSubmit(inputValue);
+                    setInputValue('');
+                }
+            };
+            
+            return (
+                <form onSubmit={manejarEnvio} className="comment-form">
+                    <input
+                        type="text"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        placeholder="Escribe tu comentario..."
+                    />
+                    <button type="submit">Enviar</button>
+                </form>
+            );
+        }
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
