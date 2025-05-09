@@ -38,6 +38,22 @@ Este proyecto incluye un buscador de usuarios con un formulario para agregar nue
 
 ---
 
+## Ejercicio React Tema Claro/Oscuro
+
+Este proyecto demuestra cómo implementar un cambio de tema (claro/oscuro) utilizando **React Context**.
+
+- **Archivo principal:** [index.html](EjercicioUseContext/index.html)
+
+---
+
+## Ejercicio Renderizado de Hijos
+
+Este proyecto utiliza `useCallback` para optimizar el renderizado de componentes en una aplicación React.
+
+- **Archivo principal:** [index.html](EjercicioUseCallback/index.html)
+
+---
+
 ## Ejercicio API con .NET Core y SQL Server
 
 Este proyecto es una API desarrollada con .NET Core que utiliza SQL Server como base de datos. Incluye controladores para gestionar incidentes.
@@ -56,4 +72,12 @@ Un juego interactivo basado en pistas que se navegan a través de la línea de c
 - **Ejemplo de pista:** [clue.txt](Laboratorio%200/command-line-clue-ludwing/game/park/playground/clue.txt)
 
 ---
+
+## Notas
+
+- Cada proyecto incluye estilos CSS personalizados y utiliza variables para mantener consistencia en el diseño.
+- Para ejecutar los proyectos de React, simplemente abre el archivo `index.html` en tu navegador.
+- Para el proyecto de .NET Core, asegúrate de tener configurado un entorno de desarrollo con Visual Studio y SQL Server.
+
+¡Explora los proyectos y diviértete aprendiendo!
 
